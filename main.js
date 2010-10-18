@@ -69,7 +69,7 @@ exports.createMonitor(root, options, cb) {
   if (!cb) {cb = options; options = {}}
   var monitor = new events.EventEmitter();
   exports.watchTree(root, options, function (f, curr, prev) {
-    if (typeof f == "object" && f.length) {
+    if (typeof f == "object" && prev == null && curr === null) {
       monitor.files = f;
       return cb(monitor);
     }
@@ -79,6 +79,6 @@ exports.createMonitor(root, options, cb) {
     if (curr.nlink === 0) {
       return monitor.emit("removed", f, curr);
     }
-    monitor.emit("change", f, curr, prev);
+    monitor.emit("changed", f, curr, prev);
   })
 }
