@@ -65,7 +65,7 @@ exports.watchTree = function ( root, options, callback ) {
   })
 }
 
-exports.createMonitor(root, options, cb) {
+exports.createMonitor = function (root, options, cb) {
   if (!cb) {cb = options; options = {}}
   var monitor = new events.EventEmitter();
   exports.watchTree(root, options, function (f, curr, prev) {
