@@ -82,3 +82,5 @@ exports.createMonitor = function (root, options, cb) {
     monitor.emit("changed", f, curr, prev);
   })
 }
+
+exports.walk = walk;
