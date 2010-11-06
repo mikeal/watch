@@ -39,6 +39,7 @@ exports.watchTree = function ( root, options, callback ) {
         if (!files[f].isDirectory()) callback(f, c, p);
         else {
           fs.readdir(f, function (err, nfiles) {
+            if (err) return;
             nfiles.forEach(function (b) {
               var file = path.join(f, b);
               if (!files[file]) {
@@ -58,6 +59,7 @@ exports.watchTree = function ( root, options, callback ) {
         }
       })
     }
+    fileWatcher(root);
     for (i in files) {
       fileWatcher(i);
     }
