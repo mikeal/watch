@@ -16,8 +16,8 @@ function walk (dir, options, callback) {
       f = path.join(dir, f);
       callback.pending += 1;
       fs.stat(f, function (err, stat) {
-        if (err) return callback(err)
         callback.pending -= 1;
+        if (err) return callback(err, [f])
         if (options.ignoreDotFiles && path.basename(f)[0] === '.') return;
         if (options.filter && options.filter(f)) return;
         callback.files[f] = stat;
@@ -32,7 +32,8 @@ function walk (dir, options, callback) {
 
 exports.watchTree = function ( root, options, callback ) {
   if (!callback) {callback = options; options = {}}
-  walk(root, function (err, files) {
+  walk(root, {}, function (err, files) {
+	if(err) return callback(files, null, null, err);
     var fileWatcher = function (f) {
       fs.watchFile(f, options, function (c, p) {
         files[f] = c;
@@ -70,19 +71,25 @@ exports.watchTree = function ( root, options, callback ) {
 exports.createMonitor = function (root, options, cb) {
   if (!cb) {cb = options; options = {}}
   var monitor = new events.EventEmitter();
-  exports.watchTree(root, options, function (f, curr, prev) {
-    if (typeof f == "object" && prev == null && curr === null) {
-      monitor.files = f;
-      return cb(monitor);
-    }
-    if (prev === null) {
-      return monitor.emit("created", f, curr);
-    }
-    if (curr.nlink === 0) {
-      return monitor.emit("removed", f, curr);
-    }
-    monitor.emit("changed", f, curr, prev);
+  exports.watchTree(root, options, function (f, curr, prev, err) {
+	if(err)
+		return monitor.emit("error", err, f);
+	if (typeof f == "object" && prev == null && curr === null) {
+	  monitor.files = f;
+	  monitor.emit("initialized", f);
+	  if(cb)
+		cb.call(monitor, f);
+	  return;
+	}
+	if (prev === null) {
+	  return monitor.emit("created", f, curr);
+	}
+	if (curr.nlink === 0) {
+	  return monitor.emit("removed", f, curr);
+	}
+	monitor.emit("changed", f, curr, prev);
   })
+  return monitor;
 }
 
 exports.walk = walk;
