@@ -9,32 +9,38 @@ function walk (dir, options, callback) {
   if (!callback.files) callback.files = {};
   if (!callback.pending) callback.pending = 0;
   callback.pending += 1;
-  fs.readdir(dir, function (err, files) {
+  fs.stat(dir, function (err, stat) {
     if (err) return callback(err);
-    callback.pending -= 1;
-    files.forEach(function (f) {
-      f = path.join(dir, f);
-      callback.pending += 1;
-      fs.stat(f, function (err, stat) {
-        if (err) return callback(err)
-        callback.pending -= 1;
-        if (options.ignoreDotFiles && path.basename(f)[0] === '.') return;
-        if (options.filter && options.filter(f)) return;
-        callback.files[f] = stat;
-        if (stat.isDirectory()) walk(f, options, callback);
-        if (callback.pending === 0) callback(null, callback.files);
+    callback.files[dir] = stat;
+    fs.readdir(dir, function (err, files) {
+      if (err) return callback(err);
+      callback.pending -= 1;
+      files.forEach(function (f) {
+        f = path.join(dir, f);
+        callback.pending += 1;
+        fs.stat(f, function (err, stat) {
+          if (err) return callback(err)
+          callback.pending -= 1;
+          if (options.ignoreDotFiles && path.basename(f)[0] === '.') return;
+          if (options.filter && options.filter(f)) return;
+          callback.files[f] = stat;
+          if (stat.isDirectory()) walk(f, options, callback);
+          if (callback.pending === 0) callback(null, callback.files);
+        })
       })
+      if (callback.pending === 0) callback(null, callback.files);
     })
     if (callback.pending === 0) callback(null, callback.files);
   })
-  if (callback.pending === 0) callback(null, callback.files);
+  
 }
-
 exports.watchTree = function ( root, options, callback ) {
   if (!callback) {callback = options; options = {}}
   walk(root, function (err, files) {
     var fileWatcher = function (f) {
       fs.watchFile(f, options, function (c, p) {
+        // Check if anything actually changed in stat
+        if (files[f] && !files[f].isDirectory() && c.nlink !== 0 && files[f].ino == c.ino) return;
         files[f] = c;
         if (!files[f].isDirectory()) callback(f, c, p);
         else {
