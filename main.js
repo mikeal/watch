@@ -54,7 +54,7 @@ exports.watchTree = function ( root, options, callback ) {
     var fileWatcher = function (f) {
       fs.watchFile(f, options, function (c, p) {
         // Check if anything actually changed in stat
-        if (files[f] && !files[f].isDirectory() && c.nlink !== 0 && files[f].ino == c.ino) return;
+        if (files[f] && !files[f].isDirectory() && c.nlink !== 0 && files[f].mtime == c.mtime) return;
         files[f] = c;
         if (!files[f].isDirectory()) callback(f, c, p);
         else {
