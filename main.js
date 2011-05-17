@@ -51,6 +51,7 @@ function walk (dir, options, callback) {
 exports.watchTree = function ( root, options, callback ) {
   if (!callback) {callback = options; options = {}}
   walk(root, function (err, files) {
+    if (err) throw err;
     var fileWatcher = function (f) {
       fs.watchFile(f, options, function (c, p) {
         // Check if anything actually changed in stat
