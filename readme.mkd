@@ -58,10 +58,10 @@ The monitor has the following events.
 <pre>
   watch.createMonitor('/home/mikeal', function (monitor) {
     monitor.files['/home/mikeal/.zshrc'] // Stat object for my zshrc.
-    monitor.on("changed", function (f, stat) {
+    monitor.on("created", function (f, stat) {
       // Handle file changes
     })
-    monitor.on("created", function (f, curr, prev) {
+    monitor.on("changed", function (f, curr, prev) {
       // Handle new files
     })
     monitor.on("removed", function (f, stat) {
