@@ -1,7 +1,7 @@
 { "name" : "watch"
 , "description" : "Utilities for watching file trees."
 , "tags" : ["util", "utility", "fs", "files"]
-, "version" : "0.3.1"
+, "version" : "0.3.2"
 , "author" : "Mikeal Rogers <mikeal.rogers@gmail.com>"
 , "directories" :
   { "lib" : "lib" }
