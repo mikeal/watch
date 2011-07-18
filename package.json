@@ -2,6 +2,12 @@
 , "description" : "Utilities for watching file trees."
 , "tags" : ["util", "utility", "fs", "files"]
 , "version" : "0.3.2"
+, "homepage": "https://github.com/mikeal/watch"
+, "bugs":
+  { "web": "https://github.com/mikeal/watch/issues" }
+, "repository": { "type": "git"
+  , "url": "git://github.com/mikeal/watch.git"
+  }
 , "author" : "Mikeal Rogers <mikeal.rogers@gmail.com>"
 , "directories" :
   { "lib" : "lib" }
