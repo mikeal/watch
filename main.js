@@ -12,7 +12,7 @@
 //    See the License for the specific language governing permissions and
 //    limitations under the License.
 
-var sys = require('sys')
+var sys = require('util')
   , fs = require('fs')
   , path = require('path')
   , events = require('events')
