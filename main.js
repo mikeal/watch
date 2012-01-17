@@ -35,10 +35,15 @@ function walk (dir, options, callback) {
         fs.stat(f, function (err, stat) {
           if (err) return callback(err)
           callback.pending -= 1;
-          if (!(options.ignoreDotFiles && path.basename(f)[0] === '.' || options.filter && options.filter(f))) {
+
+          var ignored = options.ignoreDotFiles && path.basename(f)[0] === '.',
+              filtered = options.filter && options.filter(f); 
+          
+          if (!(ignored || filtered)) {
               callback.files[f] = stat;
               if (stat.isDirectory()) walk(f, options, callback);
           }
+
           if (callback.pending === 0) callback(null, callback.files);
         })
       })
