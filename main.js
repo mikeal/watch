@@ -36,7 +36,7 @@ function walk (dir, options, callback) {
           if (err) return callback(err)
           callback.pending -= 1;
           if (options.ignoreDotFiles && path.basename(f)[0] === '.') return;
-          if (options.filter && options.filter(f)) return;
+          if (options.filter && options.filter(f, stat)) return;
           callback.files[f] = stat;
           if (stat.isDirectory()) walk(f, options, callback);
           if (callback.pending === 0) callback(null, callback.files);
