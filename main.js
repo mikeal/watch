@@ -34,8 +34,13 @@ function walk (dir, options, callback) {
         callback.pending += 1;
         fs.stat(f, function (err, stat) {
           var enoent = false;
-          if (err && (err.code === 'ENOENT')) { enoent = true; }
-          if (err && !enoent) return callback(err)
+          if (err) {
+            if (err.code !== 'ENOENT') {
+              return callback(err);
+            } else {
+              enoent = true;
+            }
+          }
           callback.pending -= 1;
           if (!enoent) {
             if (options.ignoreDotFiles && path.basename(f)[0] === '.') return;
