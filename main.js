@@ -29,17 +29,26 @@ function walk (dir, options, callback) {
     fs.readdir(dir, function (err, files) {
       if (err) return callback(err);
       callback.pending -= 1;
-      files.forEach(function (f) {
+      files.forEach(function (f, index) {
         f = path.join(dir, f);
         callback.pending += 1;
         fs.stat(f, function (err, stat) {
-          if (err) return callback(err)
+          var enoent = false;
+          if (err) {
+            if (err.code !== 'ENOENT') {
+              return callback(err);
+            } else {
+              enoent = true;
+            }
+          }
           callback.pending -= 1;
-          if (options.ignoreDotFiles && path.basename(f)[0] === '.') return;
-          if (options.filter && options.filter(f, stat)) return;
-          callback.files[f] = stat;
-          if (stat.isDirectory()) walk(f, options, callback);
-          if (callback.pending === 0) callback(null, callback.files);
+          if (!enoent) {
+            if (options.ignoreDotFiles && path.basename(f)[0] === '.') return;
+            if (options.filter && options.filter(f, stat)) return;
+            callback.files[f] = stat;
+            if (stat.isDirectory()) walk(f, options, callback);
+            if (callback.pending === 0) callback(null, callback.files);
+          }
         })
       })
       if (callback.pending === 0) callback(null, callback.files);
