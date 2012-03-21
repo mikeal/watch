@@ -90,7 +90,7 @@ exports.watchTree = function ( root, options, callback ) {
       })
     }
     fileWatcher(root);
-    for (i in files) {
+    for (var i in files) {
       fileWatcher(i);
     }
     callback(files, null, null);
