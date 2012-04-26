@@ -1,11 +1,11 @@
 // Copyright 2010-2011 Mikeal Rogers
-// 
+//
 //    Licensed under the Apache License, Version 2.0 (the "License");
 //    you may not use this file except in compliance with the License.
 //    You may obtain a copy of the License at
-// 
+//
 //        http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 //    Unless required by applicable law or agreed to in writing, software
 //    distributed under the License is distributed on an "AS IS" BASIS,
 //    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@ var sys = require('util')
   , events = require('events')
   ;
 
-function walk (dir, options, callback) { 
+function walk (dir, options, callback) {
   if (!callback) {callback = options; options = {}}
   if (!callback.files) callback.files = {};
   if (!callback.pending) callback.pending = 0;
@@ -33,7 +33,9 @@ function walk (dir, options, callback) {
         f = path.join(dir, f);
         callback.pending += 1;
         fs.stat(f, function (err, stat) {
-          var enoent = false;
+          var enoent = false
+            , done = false;
+
           if (err) {
             if (err.code !== 'ENOENT') {
               return callback(err);
@@ -42,12 +44,13 @@ function walk (dir, options, callback) {
             }
           }
           callback.pending -= 1;
+          done = callback.pending === 0;
           if (!enoent) {
-            if (options.ignoreDotFiles && path.basename(f)[0] === '.') return;
-            if (options.filter && options.filter(f, stat)) return;
+            if (options.ignoreDotFiles && path.basename(f)[0] === '.') return done && callback(null, callback.files);
+            if (options.filter && options.filter(f, stat)) return done && callback(null, callback.files);
             callback.files[f] = stat;
             if (stat.isDirectory()) walk(f, options, callback);
-            if (callback.pending === 0) callback(null, callback.files);
+            if (done) callback(null, callback.files);
           }
         })
       })
@@ -55,7 +58,7 @@ function walk (dir, options, callback) {
     })
     if (callback.pending === 0) callback(null, callback.files);
   })
-  
+
 }
 exports.watchTree = function ( root, options, callback ) {
   if (!callback) {callback = options; options = {}}
