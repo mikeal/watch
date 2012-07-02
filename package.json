@@ -1,14 +1,14 @@
-{ "name" : "watch"
+{ "name" : "protonet-watch"
 , "description" : "Utilities for watching file trees."
 , "tags" : ["util", "utility", "fs", "files"]
-, "version" : "0.5.1"
-, "homepage": "https://github.com/mikeal/watch"
+, "version" : "0.1"
+, "homepage": "https://github.com/protonet/watch"
 , "bugs":
-  { "url": "https://github.com/mikeal/watch/issues" }
+  { "url": "https://github.com/protonet/watch/issues" }
 , "repository": { "type": "git"
-  , "url": "git://github.com/mikeal/watch.git"
+  , "url": "git://github.com/protonet/watch.git"
   }
-, "author" : "Mikeal Rogers <mikeal.rogers@gmail.com>"
+, "author" : "Mikeal Rogers <mikeal.rogers@gmail.com>, Christopher Blum <christopher@protonet.info>"
 , "directories" :
   { "lib" : "lib" }
 , "engines" : ["node >=0.1.95"]
