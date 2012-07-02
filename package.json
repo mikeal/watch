@@ -1,7 +1,7 @@
 { "name" : "protonet-watch"
 , "description" : "Utilities for watching file trees."
 , "tags" : ["util", "utility", "fs", "files"]
-, "version" : "0.1"
+, "version" : "0.6.0"
 , "homepage": "https://github.com/protonet/watch"
 , "bugs":
   { "url": "https://github.com/protonet/watch/issues" }
