@@ -3,7 +3,7 @@ var watch = require('../main')
   , path = require('path')
   , fs = require('fs')
   , dir = path.join(__dirname, "fixtures")
-  , target = path.join(dir, "d/t")
+  , target = path.join(dir, ".d/t")
   ;
 
 function clearFile() {
@@ -13,12 +13,11 @@ function clearFile() {
 clearFile()
 
 // test if changed event is fired correctly
-watch.createMonitor(dir, { interval: 150 },
+watch.createMonitor(dir, { interval: 150, ignoreDotFiles: true },
   function (monitor) {
     monitor.once('changed', function (f) {
-      assert.equal(f, target);
-      clearFile();
-      process.exit(0)
+      // this shouldn't have been fired
+      assert.ok(false);
     })
     
     setTimeout(function() {
@@ -26,8 +25,9 @@ watch.createMonitor(dir, { interval: 150 },
         if (err) throw err;
 
         setTimeout(function () {
-          // should have got the other assert done by now
-          assert.ok(false);
+          assert.ok(true);
+          clearFile();
+          process.exit(0)
         }, 300);
       })
     }, 1000);

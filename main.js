@@ -32,7 +32,7 @@ function walk (dir, options, callback) {
       files.forEach(function (f, index) {
         f = path.join(dir, f);
         callback.pending += 1;
-        fs.stat(f, function (err, stat) {
+        fs[options.ignoreSymbolicLinks ? "lstat" : "stat"](f, function (err, stat) {
           var enoent = false
             , done = false;
 
@@ -46,6 +46,7 @@ function walk (dir, options, callback) {
           callback.pending -= 1;
           done = callback.pending === 0;
           if (!enoent) {
+            if (stat.isSymbolicLink()) return done && callback(null, callback.files);
             if (options.ignoreDotFiles && path.basename(f)[0] === '.') return done && callback(null, callback.files);
             if (options.filter && options.filter(f, stat)) return done && callback(null, callback.files);
             callback.files[f] = stat;
