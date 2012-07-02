@@ -1,4 +1,4 @@
-{ "name" : "protonet-watch"
+{ "name" : "watch"
 , "description" : "Utilities for watching file trees."
 , "tags" : ["util", "utility", "fs", "files"]
 , "version" : "0.6.0"
