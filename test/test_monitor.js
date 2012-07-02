@@ -19,13 +19,15 @@ watch.createMonitor(__dirname, { interval: 150 },
       clearFile();
       process.exit(0)
     })
+    
+    setTimeout(function() {
+      fs.writeFile(target, 'Test Write\n', function (err) {
+        if (err) throw err;
 
-    fs.writeFile(target, 'Test Write\n', function (err) {
-      if (err) throw err;
-
-      setTimeout(function () {
-        // should have got the other assert done by now
-        assert.ok(false);
-      }, 300);
-    })
+        setTimeout(function () {
+          // should have got the other assert done by now
+          assert.ok(false);
+        }, 300);
+      })
+    }, 1000);
 });
