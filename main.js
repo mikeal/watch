@@ -51,7 +51,7 @@ function walk (dir, options, callback) {
             if (options.filter && options.filter(f, stat)) return done && callback(null, callback.files);
             callback.files[f] = stat;
             if (stat.isDirectory()) walk(f, options, callback);
-            if (done) callback(null, callback.files);
+            if (callback.pending === 0) callback(null, callback.files);
           }
         })
       })

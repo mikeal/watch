@@ -18,7 +18,7 @@ watch.createMonitor(dir, { interval: 150 },
     monitor.once('changed', function (f) {
       assert.equal(f, target);
       clearFile();
-      process.exit(0)
+      process.exit(0);
     })
     
     setTimeout(function() {
