@@ -18,10 +18,12 @@ var sys = require('util')
   , events = require('events')
   ;
 
-function walk (dir, options, callback) {
+function walk (dir, options, callback, deepness) {
   if (!callback) {callback = options; options = {}}
+  if (!options.maxDeepness) options.maxDeepness = 50;
   if (!callback.files) callback.files = {};
   if (!callback.pending) callback.pending = 0;
+  if (!deepness) deepness = 1;
   callback.pending += 1;
   fs.stat(dir, function (err, stat) {
     if (err) return callback(err);
@@ -32,7 +34,7 @@ function walk (dir, options, callback) {
       files.forEach(function (f, index) {
         f = path.join(dir, f);
         callback.pending += 1;
-        fs.stat(f, function (err, stat) {
+        fs[options.ignoreSymbolicLinks ? "lstat" : "stat"](f, function (err, stat) {
           var enoent = false
             , done = false;
 
@@ -46,11 +48,12 @@ function walk (dir, options, callback) {
           callback.pending -= 1;
           done = callback.pending === 0;
           if (!enoent) {
+            if (stat.isSymbolicLink()) return done && callback(null, callback.files);
             if (options.ignoreDotFiles && path.basename(f)[0] === '.') return done && callback(null, callback.files);
             if (options.filter && options.filter(f, stat)) return done && callback(null, callback.files);
             callback.files[f] = stat;
-            if (stat.isDirectory()) walk(f, options, callback);
-            if (done) callback(null, callback.files);
+            if (stat.isDirectory() && deepness < options.maxDeepness) walk(f, options, callback, deepness + 1);
+            if (callback.pending === 0) callback(null, callback.files);
           }
         })
       })

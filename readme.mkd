@@ -17,7 +17,9 @@ The first argument is the directory root you want to watch.
 The options object is passed to fs.watchFile but can also be used to provide two additional watchTree specific options:
 
 * `'ignoreDotFiles'` - When true this option means that when the file tree is walked it will ignore files that being with "."
+* `'ignoreSymbolicLinks'` - When true this option means that when the file tree is walked it will ignore files that are symbolic links
 * `'filter'` - You can use this option to provide a function that returns true or false for each file and directory that is walked to decide whether or not that file/directory is included in the watcher.
+* `'maxDeepness'` - This option controls how many directories deep the file watcher should go (default: 50)
 
 The callback takes 3 arguments. The first is the file that was modified. The second is the current stat object for that file and the third is the previous stat object. 
 
