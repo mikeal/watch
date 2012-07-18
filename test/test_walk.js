@@ -3,6 +3,6 @@ var fs = require("fs"),
     assert = require("assert"),
     watch = require('../main');
     
-watch.walk(path.join(__dirname, "fixtures/w"), function(err, files) {
-  assert.deepEqual(Object.keys(files), [path.join(__dirname, "fixtures/w"), path.join(__dirname, "fixtures/w/s"), path.join(__dirname, "fixtures/w/s/test.txt")]);
+watch.walk(path.join(__dirname, "fixtures/walk"), function(err, files) {
+  assert.deepEqual(Object.keys(files), [path.join(__dirname, "fixtures/walk"), path.join(__dirname, "fixtures/walk/sub"), path.join(__dirname, "fixtures/walk/sub/test.txt")]);
 });

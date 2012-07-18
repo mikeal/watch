@@ -2,8 +2,8 @@ var watch = require('../main')
   , assert = require('assert')
   , path = require('path')
   , fs = require('fs')
-  , dir = path.join(__dirname, "fixtures")
-  , target = path.join(dir, "d/t")
+  , dir = path.join(__dirname, "fixtures/d")
+  , target = path.join(dir, "t")
   ;
 
 function clearFile() {
