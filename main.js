@@ -75,7 +75,7 @@ exports.watchTree = function ( root, options, callback ) {
             if (err) return;
             nfiles.forEach(function (b) {
               var file = path.join(f, b);
-              if (!files[file]) {
+              if (!files[file] && (options.ignoreDotFiles !== true || b[0] != '.')) {
                 fs.stat(file, function (err, stat) {
                   callback(file, stat, null);
                   files[file] = stat;
