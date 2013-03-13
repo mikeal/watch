@@ -1,7 +1,7 @@
 { "name" : "watch"
 , "description" : "Utilities for watching file trees."
 , "tags" : ["util", "utility", "fs", "files"]
-, "version" : "0.5.1"
+, "version" : "0.6.0"
 , "homepage": "https://github.com/mikeal/watch"
 , "bugs":
   { "url": "https://github.com/mikeal/watch/issues" }
