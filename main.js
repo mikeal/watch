@@ -104,18 +104,25 @@ exports.watchTree = function ( root, options, callback ) {
 exports.createMonitor = function (root, options, cb) {
   if (!cb) {cb = options; options = {}}
   var monitor = new events.EventEmitter();
+  var prevFile = null;
   exports.watchTree(root, options, function (f, curr, prev) {
     if (typeof f == "object" && prev == null && curr === null) {
       monitor.files = f;
       return cb(monitor);
     }
-    if (prev === null) {
+    if (prev === null && prevFile != f) {
+      prevFile = f;
       return monitor.emit("created", f, curr);
     }
-    if (curr.nlink === 0) {
+    if (curr.nlink === 0 && prevFile != f) {
+      prevFile = f;
       return monitor.emit("removed", f, curr);
     }
-    monitor.emit("changed", f, curr, prev);
+    if (prevFile != null) {
+      prevFile = null;
+    } else {
+      monitor.emit("changed", f, curr, prev);
+    }
   })
 }
 
