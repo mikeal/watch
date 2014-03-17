@@ -105,23 +105,21 @@ exports.createMonitor = function (root, options, cb) {
   if (!cb) {cb = options; options = {}}
   var monitor = new events.EventEmitter();
 
-  var prevFile = {file: null,action: null};
+  var prevFile = {file: null,action: null,stat: null};
   exports.watchTree(root, options, function (f, curr, prev) {
     if (typeof f == "object" && prev == null && curr === null) {
       monitor.files = f;
       return cb(monitor);
     }
     if (prev === null && (prevFile.file != f || prevFile.action != "created")) {
-      prevFile = { file: f, action: "created" };
+      prevFile = { file: f, action: "created", stat: curr };
       return monitor.emit("created", f, curr);
     }
     if (curr.nlink === 0 && (prevFile.file != f || prevFile.action != "removed")) {
-      prevFile = { file: f, action: "removed" };
+      prevFile = { file: f, action: "removed", stat: curr };
       return monitor.emit("removed", f, curr);
     }
-    if (prevFile.file != null) {
-      prevFile = {file: null,action: null};
-    } else {
+    if (prevFile.file === null || prevFile.stat.mtime.getTime() !== curr.mtime.getTime()) {
       monitor.emit("changed", f, curr, prev);
     }
   })
