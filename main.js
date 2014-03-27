@@ -115,7 +115,7 @@ exports.createMonitor = function (root, options, cb) {
       prevFile = { file: f, action: "created", stat: curr };
       return monitor.emit("created", f, curr);
     }
-    if (curr.nlink === 0 && (prevFile.file != f || prevFile.action != "removed")) {
+    if (curr && curr.nlink === 0 && (prevFile.file != f || prevFile.action != "removed")) {
       prevFile = { file: f, action: "removed", stat: curr };
       return monitor.emit("removed", f, curr);
     }
