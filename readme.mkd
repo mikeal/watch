@@ -39,6 +39,10 @@ When watchTree is finished walking the tree and adding all the listeners it pass
   })
 </pre>
 
+### watch.unwatchTree(root)
+
+Unwatch a previously watched directory root using `watch.watchTree`.
+
 ### watch.createMonitor(root, [options,] callback)
 
 This function creates an EventEmitter that gives notifications for different changes that happen to the file and directory tree under the given root argument.
@@ -55,6 +59,8 @@ The monitor has the following events.
 * `'removed'` - A file has been moved or deleted. Two arguments, the filename and the stat object for the fd.
 * `'changed'` - A file has been changed. Three arguments, the filename, the current stat object, and the previous stat object.
 
+The monitor can be stopped using `.stop` (calls `unwatchTree`).
+
 <pre>
   var watch = require('watch')
   watch.createMonitor('/home/mikeal', function (monitor) {
@@ -68,5 +74,6 @@ The monitor has the following events.
     monitor.on("removed", function (f, stat) {
       // Handle removed files
     })
+    monitor.stop(); // Stop watching
   })
 </pre>

@@ -14,7 +14,10 @@ watch.watchTree(__dirname, { filter: isDirOrQ }, function (f, curr, prev) {
     Object.keys(f).forEach(function(name) {
       var stat = f[name];
       assert(isDirOrQ(name, stat));
-      fs.unwatchFile(name);
     });
+
+    // If the process never exits then `unwatchTree` failed to unwatch all
+    // the files.
+    watch.unwatchTree(__dirname);
   }
 });

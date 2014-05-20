@@ -61,6 +61,9 @@ function walk (dir, options, callback) {
   })
 
 }
+
+var watchedFiles = Object.create(null);
+
 exports.watchTree = function ( root, options, callback ) {
   if (!callback) {callback = options; options = {}}
   walk(root, options, function (err, files) {
@@ -97,13 +100,21 @@ exports.watchTree = function ( root, options, callback ) {
     for (var i in files) {
       fileWatcher(i);
     }
+    watchedFiles[root] = files;
     callback(files, null, null);
   })
 }
 
+exports.unwatchTree = function (root) {
+  if (!watchedFiles[root]) return;
+  Object.keys(watchedFiles[root]).forEach(fs.unwatchFile);
+  watchedFiles[root] = false;
+};
+
 exports.createMonitor = function (root, options, cb) {
   if (!cb) {cb = options; options = {}}
   var monitor = new events.EventEmitter();
+  monitor.stop = exports.unwatchTree.bind(null, root);
 
   var prevFile = {file: null,action: null,stat: null};
   exports.watchTree(root, options, function (f, curr, prev) {
