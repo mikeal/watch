@@ -27,7 +27,10 @@ function walk (dir, options, callback) {
     if (err) return callback(err);
     callback.files[dir] = stat;
     fs.readdir(dir, function (err, files) {
-      if (err) return callback(err);
+      if (err) {
+        if(err.code === 'EACCES' && options.ignoreUnreadableFiles) return callback();
+        return callback(err);
+      }
       callback.pending -= 1;
       files.forEach(function (f, index) {
         f = path.join(dir, f);
