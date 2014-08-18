@@ -52,7 +52,7 @@ function walk (dir, options, callback) {
             if (options.ignoreDotFiles && path.basename(f)[0] === '.') return done && callback(null, callback.files);
             if (options.filter && !options.filter(f, stat)) return done && callback(null, callback.files);
             callback.files[f] = stat;
-            if (stat.isDirectory()) walk(f, options, callback);
+            if (stat.isDirectory() && !(options.ignoreDirectoryPattern && options.ignoreDirectoryPattern.test(f))) walk(f, options, callback);
             done = callback.pending === 0;
             if (done) callback(null, callback.files);
           }
