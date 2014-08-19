@@ -40,7 +40,7 @@ function walk (dir, options, callback) {
             , done = false;
 
           if (err) {
-            if (err.code !== 'ENOENT') {
+            if (err.code !== 'ENOENT' && (err.code !== 'EPERM' && options.ignoreNotPermitted)) {
               return callback(err);
             } else {
               enoent = true;
