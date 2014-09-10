@@ -84,6 +84,7 @@ exports.watchTree = function ( root, options, callback ) {
               var file = path.join(f, b);
               if (!files[file] && (options.ignoreDotFiles !== true || b[0] != '.')) {
                 fs.stat(file, function (err, stat) {
+                  if (options.filter && !options.filter(file, stat)) return;
                   callback(file, stat, null);
                   files[file] = stat;
                   fileWatcher(file);
