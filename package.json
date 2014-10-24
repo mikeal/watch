@@ -7,6 +7,9 @@
     "fs",
     "files"
   ],
+  "bin": {
+    "watch": "./cli.js"
+  },
   "version": "0.12.1",
   "homepage": "https://github.com/mikeal/watch",
   "bugs": {
@@ -23,5 +26,8 @@
   "engines": [
     "node >=0.1.95"
   ],
-  "main": "./main"
+  "main": "./main",
+  "dependencies": {
+    "minimist": "^1.1.0"
+  }
 }
