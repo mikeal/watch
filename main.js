@@ -122,19 +122,40 @@ exports.createMonitor = function (root, options, cb) {
 
   var prevFile = {file: null,action: null,stat: null};
   exports.watchTree(root, options, function (f, curr, prev) {
+    // if not curr, prev, but f is an object
     if (typeof f == "object" && prev == null && curr === null) {
       monitor.files = f;
       return cb(monitor);
     }
-    if (prev === null && (prevFile.file != f || prevFile.action != "created")) {
-      prevFile = { file: f, action: "created", stat: curr };
-      return monitor.emit("created", f, curr);
+
+    // if not prev and either prevFile.file is not f or prevFile.action is not created
+    if (!prev) {
+      if (prevFile.file != f || prevFile.action != "created") {
+        prevFile = { file: f, action: "created", stat: curr };
+        return monitor.emit("created", f, curr);
+      }
     }
-    if (curr.nlink === 0 && (prevFile.file != f || prevFile.action != "removed")) {
-      prevFile = { file: f, action: "removed", stat: curr };
-      return monitor.emit("removed", f, curr);
+
+    // if curr.nlink is 0 and either prevFile.file is not f or prevFile.action is not removed
+    if (curr) {
+      if (curr.nlink === 0) {
+        if (prevFile.file != f || prevFile.action != "removed") {
+          prevFile = { file: f, action: "removed", stat: curr };
+          return monitor.emit("removed", f, curr);
+        }
+      }
     }
-    if (prevFile.file === null || prevFile.stat.mtime.getTime() !== curr.mtime.getTime()) {
+
+    // if prevFile.file is null or prevFile.stat.mtime is not the same as curr.mtime
+    if (prevFile.file === null) {
+      monitor.emit("changed", f, curr, prev);
+    }
+    // stat might return null, so catch errors
+    try {
+      if (prevFile.stat.mtime.getTime() !== curr.mtime.getTime()) {
+        monitor.emit("changed", f, curr, prev);
+      }
+    } catch(e) {
       monitor.emit("changed", f, curr, prev);
     }
   })
