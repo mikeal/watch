@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var argv = require('minimist')(process.argv.slice(2))
-var exec = require('child_process').exec
+var execshell = require('exec-sh')
 var watch = require('./main.js')
 
 if(argv._.length === 0) {
@@ -19,11 +19,9 @@ var wait = false
 
 watch.watchTree(dir, function (f, curr, prev) {
   if(wait) return
-  
-  var run = exec(command)
-  run.stdout.pipe(process.stdout)
-  run.stderr.pipe(process.stderr)
-  
+
+  execshell(command)
+
   if(waitTime > 0) {
     wait = true
     setTimeout(function () {
