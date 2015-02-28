@@ -148,15 +148,15 @@ exports.createMonitor = function (root, options, cb) {
 
     // if prevFile.file is null or prevFile.stat.mtime is not the same as curr.mtime
     if (prevFile.file === null) {
-      monitor.emit("changed", f, curr, prev);
+      return monitor.emit("changed", f, curr, prev);
     }
     // stat might return null, so catch errors
     try {
       if (prevFile.stat.mtime.getTime() !== curr.mtime.getTime()) {
-        monitor.emit("changed", f, curr, prev);
+        return monitor.emit("changed", f, curr, prev);
       }
     } catch(e) {
-      monitor.emit("changed", f, curr, prev);
+      return monitor.emit("changed", f, curr, prev);
     }
   })
 }
