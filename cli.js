@@ -9,15 +9,22 @@ if(argv._.length === 0) {
   process.exit()
 }
 
+var watchTreeOpts = {}
 var command = argv._[0]
 var dir = argv._[1] || process.cwd()
 var waitTime = Number(argv.wait || argv.w)
+
+if(argv.ignoreDotFiles || argv.d)
+  watchTreeOpts.ignoreDotFiles = true
+
+if(argv.ignoreUnreadable || argv.u)
+  watchTreeOpts.ignoreUnreadableDir = true
 
 console.error('> Watching', dir)
 
 var wait = false
 
-watch.watchTree(dir, function (f, curr, prev) {
+watch.watchTree(dir, watchTreeOpts, function (f, curr, prev) {
   if(wait) return
 
   execshell(command)
