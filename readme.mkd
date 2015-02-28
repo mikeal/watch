@@ -95,11 +95,11 @@ OPTIONS:
         throttle calls to <command> for the specified duration.
 
     --ignoreDotFiles, -d
-        Ignores dot or hidden files in watch target.
+        Ignores dot or hidden files in the watch [directory].
 
      --ignoreUnreadable, -u
         Silently ignores files that cannot be read within the
-        watch target.
+        watch [directory].
 ```
 
 It will watch the given directory (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
