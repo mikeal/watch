@@ -84,11 +84,22 @@ The monitor can be stopped using `.stop` (calls `unwatchTree`).
 
 This module includes a simple command line interface, which you can install with `npm install watch -g`.
 
+
 ```
-Usage: watch <command> [directory] [--wait=<seconds>]
+Usage: watch <command> [directory] [OPTIONS]
+
+OPTIONS:
+    --wait=<seconds>
+        Duration, in seconds, that watching will be disabled
+        after running <command>. Setting this option will
+        throttle calls to <command> for the specified duration.
+
+    --ignoreDotFiles, -d
+        Ignores dot or hidden files in the watch [directory].
+
+     --ignoreUnreadable, -u
+        Silently ignores files that cannot be read within the
+        watch [directory].
 ```
 
-It will watch the given directory (defaults to the current working directory) with `watchTree` and run
-the given command every time a file changes. The optional `wait` parameter specifies a time in seconds
-that the watching will be disabled after running a command.
-
+It will watch the given directory (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
