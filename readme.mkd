@@ -19,6 +19,7 @@ The options object is passed to fs.watchFile but can also be used to provide two
 * `'ignoreDotFiles'` - When true this option means that when the file tree is walked it will ignore files that being with "."
 * `'filter'` - You can use this option to provide a function that returns true or false for each file and directory to decide whether or not that file/directory is included in the watcher.
 * `'ignoreUnreadableDir'` - When true, this options means that when a file can't be read, this file is silently skipped.
+* `'ignoreNotPermitted'` - When true, this options means that when a file can't be read due to permission issues, this file is silently skipped.
 * `'ignoreDirectoryPattern'` - When a regex pattern is set, e.g. /node_modules/, these directories are silently skipped.
 
 The callback takes 3 arguments. The first is the file that was modified. The second is the current stat object for that file and the third is the previous stat object.
