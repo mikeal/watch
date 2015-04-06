@@ -87,7 +87,7 @@ This module includes a simple command line interface, which you can install with
 
 
 ```
-Usage: watch <command> [directory] [OPTIONS]
+Usage: watch <command> [...directory] [OPTIONS]
 
 OPTIONS:
     --wait=<seconds>
@@ -103,4 +103,4 @@ OPTIONS:
         watch [directory].
 ```
 
-It will watch the given directory (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
+It will watch the given directories (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
