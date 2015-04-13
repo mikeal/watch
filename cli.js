@@ -6,7 +6,7 @@ var minimatch = require('minimatch')
 var watch = require('./main.js')
 
 if(argv._.length === 0) {
-  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--ignoreDotFiles] [--ignoreUnreadable] [--filter=<glob>]')
+  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--ignoreDotFiles] [--ignoreUnreadable] [--filter=<pattern>]')
   process.exit()
 }
 
