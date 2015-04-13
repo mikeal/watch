@@ -98,9 +98,14 @@ OPTIONS:
     --ignoreDotFiles, -d
         Ignores dot or hidden files in the watch [directory].
 
-     --ignoreUnreadable, -u
+    --ignoreUnreadable, -u
         Silently ignores files that cannot be read within the
         watch [directory].
+
+    --filter,-f=<pattern>
+        Watches only files matching a <pattern>. You need to
+        quote the <pattern> to prevent shell globbing.
+        e.g "*.js"
 ```
 
 It will watch the given directories (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
