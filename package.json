@@ -1,7 +1,7 @@
 {
   "name": "watch",
   "description": "Utilities for watching file trees.",
-  "tags": [
+  "keywords": [
     "util",
     "utility",
     "fs",
