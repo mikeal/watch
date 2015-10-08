@@ -51,6 +51,8 @@ function walk (dir, options, callback) {
           if (!enoent) {
             if (options.ignoreDotFiles && path.basename(f)[0] === '.') return done && callback(null, callback.files);
             if (options.filter && !options.filter(f, stat)) return done && callback(null, callback.files);
+            if (options.extensions && options.extensions.indexOf(path.extname(f).toLowerCase()) == -1) return done && callback(null, callback.files);
+
             callback.files[f] = stat;
             if (stat.isDirectory() && !(options.ignoreDirectoryPattern && options.ignoreDirectoryPattern.test(f))) walk(f, options, callback);
             done = callback.pending === 0;
@@ -85,6 +87,7 @@ exports.watchTree = function ( root, options, callback ) {
               if (!files[file] && (options.ignoreDotFiles !== true || b[0] != '.')) {
                 fs.stat(file, function (err, stat) {
                   if (options.filter && !options.filter(file, stat)) return;
+                  if (options.extensions && options.extensions.indexOf(path.extname(file).toLowerCase()) == -1) return;
                   callback(file, stat, null);
                   files[file] = stat;
                   fileWatcher(file);
