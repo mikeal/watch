@@ -5,7 +5,7 @@ var execshell = require('exec-sh')
 var watch = require('./main.js')
 
 if(argv._.length === 0) {
-  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--ignoreDotFiles] [--ignoreUnreadable]')
+  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--ignoreDotFiles] [--ignoreUnreadable] [--extensions=<.ext1,.ext2>]')
   process.exit()
 }
 
@@ -30,6 +30,12 @@ if(argv.ignoreDotFiles || argv.d)
 
 if(argv.ignoreUnreadable || argv.u)
   watchTreeOpts.ignoreUnreadableDir = true
+
+if(argv.extensions || argv.e) {
+  extensions = argv.extensions || argv.e
+  if(extensions)
+    watchTreeOpts.extensions = extensions.toLowerCase().split(',')
+}
 
 var wait = false
 

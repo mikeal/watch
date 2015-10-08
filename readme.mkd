@@ -21,6 +21,7 @@ The options object is passed to fs.watchFile but can also be used to provide two
 * `'ignoreUnreadableDir'` - When true, this options means that when a file can't be read, this file is silently skipped.
 * `'ignoreNotPermitted'` - When true, this options means that when a file can't be read due to permission issues, this file is silently skipped.
 * `'ignoreDirectoryPattern'` - When a regex pattern is set, e.g. /node_modules/, these directories are silently skipped.
+* `'extensions'` - When an array of extensions is set, e.g. ['.js', '.coffee'], all other file types are silently skipped
 
 The callback takes 3 arguments. The first is the file that was modified. The second is the current stat object for that file and the third is the previous stat object.
 
@@ -90,7 +91,7 @@ This module includes a simple command line interface, which you can install with
 Usage: watch <command> [...directory] [OPTIONS]
 
 OPTIONS:
-    --wait=<seconds>
+    --wait=<seconds>, -w
         Duration, in seconds, that watching will be disabled
         after running <command>. Setting this option will
         throttle calls to <command> for the specified duration.
@@ -101,6 +102,11 @@ OPTIONS:
      --ignoreUnreadable, -u
         Silently ignores files that cannot be read within the
         watch [directory].
+        
+    --extensions=<extensions>, -e
+        Silently ignores files that do not match the comma
+        separated list of extensions with the watch [directory].
+        e.g `--extensions .js,.coffe`
 ```
 
 It will watch the given directories (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
