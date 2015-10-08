@@ -31,9 +31,11 @@ if(argv.ignoreDotFiles || argv.d)
 if(argv.ignoreUnreadable || argv.u)
   watchTreeOpts.ignoreUnreadableDir = true
 
-if (argv.extensions || argv.e)
+if(argv.extensions || argv.e) {
   extensions = argv.extensions || argv.e
-  watchTreeOpts.extensions = extensions.toLowerCase().split(',')
+  if(extensions)
+    watchTreeOpts.extensions = extensions.toLowerCase().split(',')
+}
 
 var wait = false
 
