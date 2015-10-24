@@ -95,6 +95,11 @@ OPTIONS:
         after running <command>. Setting this option will
         throttle calls to <command> for the specified duration.
 
+    --filter=<file>
+        Path to a require-able .js file that exports a filter
+        function to be passed to watchTreeOptions.filter.
+        Path is resolved relative to process.cwd().
+
     --ignoreDotFiles, -d
         Ignores dot or hidden files in the watch [directory].
 

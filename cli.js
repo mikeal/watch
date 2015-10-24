@@ -6,7 +6,7 @@ var path = require('path')
 var watch = require('./main.js')
 
 if(argv._.length === 0) {
-  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<module>] [--ignoreDotFiles] [--ignoreUnreadable]')
+  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<file>] [--ignoreDotFiles] [--ignoreUnreadable]')
   process.exit()
 }
 
