@@ -2,6 +2,7 @@
 
 var argv = require('minimist')(process.argv.slice(2))
 var execshell = require('exec-sh')
+var path = require('path')
 var watch = require('./main.js')
 
 if(argv._.length === 0) {
@@ -33,7 +34,7 @@ if(argv.ignoreUnreadable || argv.u)
 
 if(argv.filter || argv.f) {
   try {
-    watchTreeOpts.filter = require(argv.filter || argv.f)
+    watchTreeOpts.filter = require(path.resolve(process.cwd(), argv.filter || argv.f))
   } catch (e) {
     console.error(e)
     process.exit(1)
