@@ -30,6 +30,7 @@
   "main": "./main",
   "dependencies": {
     "exec-sh": "^0.2.0",
-    "minimist": "^1.1.0"
+    "minimist": "^1.1.0",
+    "splitargs": "0.0.3"
   }
 }
