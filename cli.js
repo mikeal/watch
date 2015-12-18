@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-var arguments = require('splitArgs')(process.argv.slice(2).join(' '))
-var argv = require('minimist')(arguments)
+
+var argv = require('minimist')(process.argv.slice(2))
 var execshell = require('exec-sh')
 var path = require('path')
 var watch = require('./main.js')
