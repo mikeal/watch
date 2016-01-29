@@ -6,7 +6,7 @@ var path = require('path')
 var watch = require('./main.js')
 
 if(argv._.length === 0) {
-  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<file>] [--ignoreDotFiles] [--ignoreUnreadable]')
+  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<file>] [--ignoreDotFiles] [--ignoreUnreadable] [--verbose]')
   process.exit()
 }
 
@@ -47,7 +47,7 @@ var dirLen = dirs.length
 var skip = dirLen - 1
 for(i = 0; i < dirLen; i++) {
   var dir = dirs[i]
-  console.error('> Watching', dir)
+  console.error('> watch: Watching', dir)
   watch.watchTree(dir, watchTreeOpts, function (f, curr, prev) {
     if(skip) {
         skip--
@@ -55,6 +55,18 @@ for(i = 0; i < dirLen; i++) {
     }
     if(wait) return
 
+    if (argv.verbose || argv.v) {
+      if (typeof f == "object" && prev === null && curr === null) {
+        console.log("> watch: Watching " + Object.keys(f).length + " files.");
+      } else if (prev === null) {
+        console.log("> watch: New file: " + f + ". Executing.");
+      } else if (curr.nlink === 0) {
+        // f was removed
+        console.log("> watch: File removed: " + f + ". Executing.");
+      } else {
+        console.log("> watch: File changed: " + f + ". Executing");
+      }
+    }
     execshell(command)
 
     if(waitTime > 0) {
