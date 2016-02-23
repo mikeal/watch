@@ -106,6 +106,10 @@ OPTIONS:
      --ignoreUnreadable, -u
         Silently ignores files that cannot be read within the
         watch [directory].
+
+     --ignoreDirectoryPattern=<regexp>, -p
+        Silently skips directories that match the regular
+        expression.
 ```
 
 It will watch the given directories (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
