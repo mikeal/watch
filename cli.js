@@ -6,7 +6,7 @@ var path = require('path')
 var watch = require('./main.js')
 
 if(argv._.length === 0) {
-  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<file>] [--ignoreDotFiles] [--ignoreUnreadable]')
+  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<file>] [--ignoreDotFiles] [--ignoreUnreadable] [--ignoreDirectoryPattern]')
   process.exit()
 }
 
@@ -31,6 +31,11 @@ if(argv.ignoreDotFiles || argv.d)
 
 if(argv.ignoreUnreadable || argv.u)
   watchTreeOpts.ignoreUnreadableDir = true
+
+if(argv.ignoreDirectoryPattern || argv.p) {
+  var match = (argv.ignoreDirectoryPattern || argv.p).match(/\/(.*)\/([gimuy])/);
+  watchTreeOpts.ignoreDirectoryPattern = new RegExp(match[1], match[2])
+}
 
 if(argv.filter || argv.f) {
   try {
