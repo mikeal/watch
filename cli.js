@@ -6,7 +6,7 @@ var path = require('path')
 var watch = require('./main.js')
 
 if(argv._.length === 0) {
-  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<file>] [--ignoreDotFiles] [--ignoreUnreadable]')
+  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<file>] [--interval=<seconds>] [--ignoreDotFiles] [--ignoreUnreadable]')
   process.exit()
 }
 
@@ -25,6 +25,9 @@ if (argLen > 1) {
 }
 
 var waitTime = Number(argv.wait || argv.w)
+if (argv.interval || argv.i) {
+  watchTreeOpts.interval = Number(argv.interval || argv.i || 0.2) * 1000.0;
+}
 
 if(argv.ignoreDotFiles || argv.d)
   watchTreeOpts.ignoreDotFiles = true
