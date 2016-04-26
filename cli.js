@@ -61,7 +61,20 @@ if (argv.include) {
       return (filterFn) ? filterFn(fileName) : true
     }
 
-    if (minimatch(fileName, argv.include)) {
+    const isMatch = !dirs.length ? minimatch(fileName, `**/${argv.include}`) : dirs.some(dir => {
+      const absDir = path.resolve(dir) + '/'
+      var relFileName = path.resolve(fileName).replace(absDir, '')
+
+      console.log({ dir, absDir, fileName, relFileName })
+
+      return minimatch(relFileName, argv.include)
+    })
+
+    console.log(`\nisMatch  pattern   fileName`)
+    console.log(`${isMatch}    ${argv.include}  ${fileName}`)
+    console.log('-'.repeat(80))
+
+    if (isMatch) {
       return (filterFn) ? filterFn(fileName) : true
     } else {
       return false
