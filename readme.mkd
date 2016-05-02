@@ -113,3 +113,15 @@ OPTIONS:
 ```
 
 It will watch the given directories (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
+
+## Contributing
+
+### Releasing
+
+On the latest clean `master`:
+
+```
+npm run release:major
+npm run release:minor
+npm run release:patch
+```

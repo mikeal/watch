@@ -1,6 +1,11 @@
 {
   "name": "watch",
   "description": "Utilities for watching file trees.",
+  "scripts": {
+    "release:major": "bash scripts/release.sh major",
+    "release:minor": "bash scripts/release.sh minor",
+    "release:patch": "bash scripts/release.sh patch"
+  },
   "keywords": [
     "util",
     "utility",
