@@ -4,9 +4,19 @@ var argv = require('minimist')(process.argv.slice(2))
 var execshell = require('exec-sh')
 var path = require('path')
 var watch = require('./main.js')
+var minimatch = require('minimatch')
+var fs = require('fs')
 
 if(argv._.length === 0) {
-  console.error('Usage: watch <command> [...directory] [--wait=<seconds>] [--filter=<file>] [--interval=<seconds>] [--ignoreDotFiles] [--ignoreUnreadable]')
+  console.error([
+    'Usage: watch <command> [...directory]',
+    '[--wait=<seconds>]',
+    '[--filter=<file>]',
+    '[--include=<pattern>]',
+    '[--interval=<seconds>]',
+    '[--ignoreDotFiles]',
+    '[--ignoreUnreadable]'
+  ].join(' '))
   process.exit()
 }
 
@@ -35,13 +45,43 @@ if(argv.ignoreDotFiles || argv.d)
 if(argv.ignoreUnreadable || argv.u)
   watchTreeOpts.ignoreUnreadableDir = true
 
+var filterFn
 if(argv.filter || argv.f) {
   try {
-    watchTreeOpts.filter = require(path.resolve(process.cwd(), argv.filter || argv.f))
+    filterFn = require(path.resolve(process.cwd(), argv.filter || argv.f))
   } catch (e) {
     console.error(e)
     process.exit(1)
   }
+}
+
+if (argv.include) {
+  watchTreeOpts.filter = function (fileName) {
+    if (fs.statSync(fileName).isDirectory()) {
+      return (filterFn) ? filterFn(fileName) : true
+    }
+
+    const isMatch = !dirs.length ? minimatch(fileName, `**/${argv.include}`) : dirs.some(dir => {
+      const absDir = path.resolve(dir) + '/'
+      var relFileName = path.resolve(fileName).replace(absDir, '')
+
+      console.log({ dir, absDir, fileName, relFileName })
+
+      return minimatch(relFileName, argv.include)
+    })
+
+    console.log(`\nisMatch  pattern   fileName`)
+    console.log(`${isMatch}    ${argv.include}  ${fileName}`)
+    console.log('-'.repeat(80))
+
+    if (isMatch) {
+      return (filterFn) ? filterFn(fileName) : true
+    } else {
+      return false
+    }
+  }
+} else if (filterFn) {
+  watchTreeOpts.filter = filterFn
 }
 
 var wait = false
