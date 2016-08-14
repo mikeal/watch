@@ -44,7 +44,7 @@ if(argv.ignoreUnreadable || argv.u)
   watchTreeOpts.ignoreUnreadableDir = true
 
 if(argv.ignoreDirectoryPattern || argv.p) {
-  var match = (argv.ignoreDirectoryPattern || argv.p).match(/^\/(.*)\/([gimuy])$/);
+  var match = (argv.ignoreDirectoryPattern || argv.p).match(/^\/(.*)\/([gimuy]*)$/);
   watchTreeOpts.ignoreDirectoryPattern = new RegExp(match[1], match[2])
 }
 
