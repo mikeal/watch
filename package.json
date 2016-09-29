@@ -4,7 +4,8 @@
   "scripts": {
     "release:major": "bash scripts/release.sh major",
     "release:minor": "bash scripts/release.sh minor",
-    "release:patch": "bash scripts/release.sh patch"
+    "release:patch": "bash scripts/release.sh patch",
+    "test": "node node_modules/jasmine/bin/jasmine.js test/*.test.js"
   },
   "keywords": [
     "util",
@@ -35,6 +36,7 @@
   "main": "./main",
   "dependencies": {
     "exec-sh": "^0.2.0",
+    "jasmine": "^2.5.2",
     "minimist": "^1.2.0"
   }
 }
