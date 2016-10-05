@@ -15,7 +15,7 @@
   "bin": {
     "watch": "./cli.js"
   },
-  "version": "0.19.2",
+  "version": "0.19.3",
   "homepage": "https://github.com/mikeal/watch",
   "bugs": {
     "url": "https://github.com/mikeal/watch/issues"
