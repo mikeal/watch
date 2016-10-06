@@ -34,7 +34,7 @@ if (argLen > 1) {
 
 var waitTime = Number(argv.wait || argv.w)
 if (argv.interval || argv.i) {
-  watchTreeOpts.interval = Number(argv.interval || argv.i || 0.2) * 1000.0;
+  watchTreeOpts.interval = Number(argv.interval || argv.i || 0.2);
 }
 
 if(argv.ignoreDotFiles || argv.d)
