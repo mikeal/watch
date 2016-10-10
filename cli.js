@@ -13,7 +13,8 @@ if(argv._.length === 0) {
     '[--interval=<seconds>]',
     '[--ignoreDotFiles]',
     '[--ignoreUnreadable]',
-    '[--ignoreDirectoryPattern]'
+    '[--ignoreDirectoryPattern]',
+    '[--kill]'
   ].join(' '))
   process.exit()
 }
@@ -61,6 +62,7 @@ var wait = false
 
 var dirLen = dirs.length
 var skip = dirLen - 1
+var runningPs = null;
 for(i = 0; i < dirLen; i++) {
   var dir = dirs[i]
   console.error('> Watching', dir)
@@ -71,7 +73,21 @@ for(i = 0; i < dirLen; i++) {
     }
     if(wait) return
 
-    execshell(command)
+    if(argv.kill && runningPs) {
+      wait = true;
+      runningPs.kill(argv.kill);
+      runningPs.once('close', function() {
+        runningPs = execshell(command);
+        wait = false;
+      });
+      runningPs.once('error', function() {
+        console.log('Could not kill the child process :/');
+        process.exit(1);
+      });
+      return;
+    }
+
+    runningPs = execshell(command)
 
     if(waitTime > 0) {
       wait = true
