@@ -74,7 +74,7 @@ exports.watchTree = function ( root, options, callback ) {
   walk(root, options, function (err, files) {
     if (err) throw err;
     var fileWatcher = function (f) {
-      fs.watchFile(f, options, function (c, p) {
+      fs.watch(f, options, function (c, p) {
         // Check if anything actually changed in stat
         if (files[f] && !files[f].isDirectory() && c.nlink !== 0 && files[f].mtime.getTime() == c.mtime.getTime()) return;
         files[f] = c;
@@ -98,7 +98,7 @@ exports.watchTree = function ( root, options, callback ) {
         if (c.nlink === 0) {
           // unwatch removed files.
           delete files[f]
-          fs.unwatchFile(f);
+          fs.unwatch(f);
         }
       })
     }
