@@ -69,12 +69,14 @@ var watchedFiles = Object.create(null);
 
 exports.watchTree = function ( root, options, callback ) {
   if (!callback) {callback = options; options = {}}
-  // convert interval to seconds
-  if (options.interval) {options.interval = options.interval * 1000}
   walk(root, options, function (err, files) {
     if (err) throw err;
     var fileWatcher = function (f) {
-      fs.watchFile(f, options, function (c, p) {
+      var fsOptions = {};
+      if (options.interval) {
+        fsOptions.interval = options.interval * 1000;
+      }
+      fs.watchFile(f, fsOptions, function (c, p) {
         // Check if anything actually changed in stat
         if (files[f] && !files[f].isDirectory() && c.nlink !== 0 && files[f].mtime.getTime() == c.mtime.getTime()) return;
         files[f] = c;
