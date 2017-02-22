@@ -91,10 +91,9 @@ This module includes a simple command line interface, which you can install with
 Usage: watch <command> [...directory] [OPTIONS]
 
 OPTIONS:
-    --wait=<seconds>
-        Duration, in seconds, that watching will be disabled
-        after running <command>. Setting this option will
-        throttle calls to <command> for the specified duration.
+    --wait
+        Wait for the previous instance of <command> to finish
+        before spawning another.
 
     --filter=<file>
         Path to a require-able .js file that exports a filter
