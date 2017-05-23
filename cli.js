@@ -15,7 +15,8 @@ if(argv._.length === 0) {
     '[--ignoreUnreadable]',
     '[--ignoreDirectoryPattern]',
     '[--killCommand]',
-    '[--killSignal]'
+    '[--killSignal]',
+    '[--rerunTimeout]'
   ].join(' '))
   process.exit()
 }
@@ -50,15 +51,17 @@ if(argv.ignoreDirectoryPattern || argv.p) {
   watchTreeOpts.ignoreDirectoryPattern = new RegExp(match[1], match[2])
 }
 
+var killCommand = false
 if(argv.killCommand || argv.k) {
-  watchTreeOpts.killCommand = true
+  killCommand = true
 }
 
+var killSignal = "SIGHUP"
 if(argv.killSignal || argv.s) {
-  watchTreeOpts.killSignal = argv.killSignal || argv.s
-} else {
-  watchTreeOpts.killSignal = "SIGHUP"
+  killSignal = argv.killSignal || argv.s
 }
+
+var rerunTimeout = Number(argv.rerunTimeout || argv.r)
 
 if(argv.filter || argv.f) {
   try {
@@ -94,14 +97,15 @@ for(i = 0; i < dirLen; i++) {
     }
     if(wait) return
 
-    if (watchTreeOpts.killCommand) {
+    if (killCommand) {
       if (child && !childHasExit) {
         // stop previous child and fun 
         child.removeAllListeners()
         child.on("exit", () => {
-          child = run_child(command)
+          console.log(rerunTimeout, "\n\n")
+          setTimeout(() => child = run_child(command), rerunTimeout * 1000)
         })
-        child.kill(watchTreeOpts.killSignal)
+        child.kill(killSignal)
       } else {
         // run at first time or previous child has exited
         child = run_child(command)
