@@ -13,7 +13,9 @@ if(argv._.length === 0) {
     '[--interval=<seconds>]',
     '[--ignoreDotFiles]',
     '[--ignoreUnreadable]',
-    '[--ignoreDirectoryPattern]'
+    '[--ignoreDirectoryPattern]',
+    '[--killCommand]',
+    '[--killSignal]'
   ].join(' '))
   process.exit()
 }
@@ -48,6 +50,16 @@ if(argv.ignoreDirectoryPattern || argv.p) {
   watchTreeOpts.ignoreDirectoryPattern = new RegExp(match[1], match[2])
 }
 
+if(argv.killCommand || argv.k) {
+  watchTreeOpts.killCommand = true
+}
+
+if(argv.killSignal || argv.s) {
+  watchTreeOpts.killSignal = argv.killSignal || argv.s
+} else {
+  watchTreeOpts.killSignal = "SIGHUP"
+}
+
 if(argv.filter || argv.f) {
   try {
     watchTreeOpts.filter = require(path.resolve(process.cwd(), argv.filter || argv.f))
@@ -61,6 +73,17 @@ var wait = false
 
 var dirLen = dirs.length
 var skip = dirLen - 1
+var child = null
+var childHasExit = false
+
+function run_child(command) {
+  child = execshell(command)
+  child.on("exit", () => {
+    childHasExit = true
+  })
+  return child
+}
+
 for(i = 0; i < dirLen; i++) {
   var dir = dirs[i]
   console.error('> Watching', dir)
@@ -71,7 +94,22 @@ for(i = 0; i < dirLen; i++) {
     }
     if(wait) return
 
-    execshell(command)
+    if (watchTreeOpts.killCommand) {
+      if (child && !childHasExit) {
+        // stop previous child and fun 
+        child.removeAllListeners()
+        child.on("exit", () => {
+          child = run_child(command)
+        })
+        child.kill(watchTreeOpts.killSignal)
+      } else {
+        // run at first time or previous child has exited
+        child = run_child(command)
+        childHasExit = false
+      }
+    } else {
+      execshell(command)
+    }
 
     if(waitTime > 0) {
       wait = true
