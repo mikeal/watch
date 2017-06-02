@@ -102,7 +102,6 @@ for(i = 0; i < dirLen; i++) {
         // stop previous child and fun 
         child.removeAllListeners()
         child.on("exit", () => {
-          console.log(rerunTimeout, "\n\n")
           setTimeout(() => child = run_child(command), rerunTimeout * 1000)
         })
         child.kill(killSignal)
