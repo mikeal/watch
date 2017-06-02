@@ -70,7 +70,7 @@ var watchedFiles = Object.create(null);
 exports.watchTree = function ( root, options, callback ) {
   if (!callback) {callback = options; options = {}}
   walk(root, options, function (err, files) {
-    if (err) throw err;
+    if (err) return callback(err);
     var fileWatcher = function (f) {
       var fsOptions = {};
       if (options.interval) {
@@ -126,6 +126,10 @@ exports.createMonitor = function (root, options, cb) {
 
   var prevFile = {file: null,action: null,stat: null};
   exports.watchTree(root, options, function (f, curr, prev) {
+    
+    if (typeof f == "object" && f.constructor.name === "Error") {
+      return monitor.emit("error", f);
+    }
     // if not curr, prev, but f is an object
     if (typeof f == "object" && prev == null && curr === null) {
       monitor.files = f;
