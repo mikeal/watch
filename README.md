@@ -1,5 +1,7 @@
 # watch -- Utilities for watching file trees in node.js
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mikeal/watch.svg)](https://greenkeeper.io/)
+
 ## Install
 
 <pre>
