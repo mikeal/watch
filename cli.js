@@ -8,7 +8,7 @@ var watch = require('./main.js')
 if(argv._.length === 0) {
   console.error([
     'Usage: watch <command> [...directory]',
-    '[--wait=<seconds>]',
+    '[--wait]',
     '[--filter=<file>]',
     '[--interval=<seconds>]',
     '[--ignoreDotFiles]',
@@ -32,7 +32,7 @@ if (argLen > 1) {
   dirs.push(process.cwd())
 }
 
-var waitTime = Number(argv.wait || argv.w)
+var waitForCommand = Number(argv.wait || argv.w)
 if (argv.interval || argv.i) {
   watchTreeOpts.interval = Number(argv.interval || argv.i || 0.2);
 }
@@ -57,7 +57,26 @@ if(argv.filter || argv.f) {
   }
 }
 
-var wait = false
+var commandIsRunning = false
+var needToRunCommand = false
+
+function execCommand() {
+  if(waitForCommand && commandIsRunning) {
+    needToRunCommand = true
+    return
+  }
+
+  needToRunCommand = false
+  commandIsRunning = true
+
+  execshell(command, function () {
+    commandIsRunning = false
+
+    if (needToRunCommand) {
+      execCommand();
+    }
+  })
+}
 
 var dirLen = dirs.length
 var skip = dirLen - 1
@@ -69,15 +88,7 @@ for(i = 0; i < dirLen; i++) {
         skip--
         return
     }
-    if(wait) return
 
-    execshell(command)
-
-    if(waitTime > 0) {
-      wait = true
-      setTimeout(function () {
-        wait = false
-      }, waitTime * 1000)
-    }
+    execCommand()
   })
 }
