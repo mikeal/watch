@@ -118,6 +118,28 @@ OPTIONS:
 
 It will watch the given directories (defaults to the current working directory) with `watchTree` and run the given command every time a file changes.
 
+### Examples
+
+As stated above the pattern is:
+
+    watch <command> [...directory] [OPTIONS]
+
+To run the watch command in the terminal you have to write the following:
+
+    watch 'npm run test -s' directory
+
+As the command has to be written in quotation marks Windows users may need to use double quotes rather than single quotes
+
+    watch "npm run test -s" directory
+
+Note: Because Windows users may need to use double quotes rather than single quotes they need to escape the them in npm scripts
+
+    "scripts": {
+        "watch:osx": "watch 'npm run test -s' source"
+        "watch:windows": "watch \"npm run test -s\" source",
+    }
+
+
 ## Contributing
 
 ### Releasing
