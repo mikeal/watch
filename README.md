@@ -1,5 +1,7 @@
 # watch -- Utilities for watching file trees in node.js
 
+[![NPM version](http://img.shields.io/npm/v/watch.svg)](https://www.npmjs.org/package/watch) [![dependencies Status](https://david-dm.org/mikeal/watch/status.svg)](https://david-dm.org/mikeal/watch) [![devDependencies Status](https://david-dm.org/mikeal/watch/dev-status.svg)](https://david-dm.org/mikeal/watch?type=dev)
+
 ## Install
 
 <pre>
