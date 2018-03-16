@@ -1,5 +1,4 @@
-var fs = require('fs')
-  , watch = require('../main')
+var watch = require('../main')
   , assert = require('assert')
   ;
 
