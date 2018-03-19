@@ -1,7 +1,7 @@
-var fs, watch, watch_original;
+var  watch, watch_original;
 watch = require('../main');
 watch_original = require('watch');
-fs = require('fs');
+
 
 watch.createMonitor(__dirname, function (monitor) {
     monitor.on("created", function (f, stat) {

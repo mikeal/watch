@@ -4,7 +4,8 @@
   "scripts": {
     "release:major": "bash scripts/release.sh major",
     "release:minor": "bash scripts/release.sh minor",
-    "release:patch": "bash scripts/release.sh patch"
+    "release:patch": "bash scripts/release.sh patch",
+    "lint": "eslint ."
   },
   "keywords": [
     "util",
@@ -36,5 +37,8 @@
   "dependencies": {
     "exec-sh": "^0.2.0",
     "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "4.18.2"
   }
 }
