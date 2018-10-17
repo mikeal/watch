@@ -34,7 +34,7 @@
   },
   "main": "./main",
   "dependencies": {
-    "exec-sh": "^0.2.0",
+    "exec-sh": "^0.3.2",
     "minimist": "^1.2.0"
   }
 }
