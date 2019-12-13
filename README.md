@@ -16,7 +16,7 @@ The first argument is the directory root you want to watch.
 
 The options object is passed to fs.watchFile but can also be used to provide two additional watchTree specific options:
 
-* `'ignoreDotFiles'` - When true this option means that when the file tree is walked it will ignore files that being with "."
+* `'ignoreDotFiles'` - When true this option means that when the file tree is walked it will ignore files that begin with "."
 * `'filter'` - You can use this option to provide a function that returns true or false for each file and directory to decide whether or not that file/directory is included in the watcher.
 * `'interval'` - Specifies the interval duration in seconds, the time period between polling for file changes.
 * `'ignoreUnreadableDir'` - When true, this options means that when a file can't be read, this file is silently skipped.
