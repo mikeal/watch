@@ -77,6 +77,8 @@ exports.watchTree = function ( root, options, callback ) {
         fsOptions.interval = options.interval * 1000;
       }
       fs.watchFile(f, fsOptions, function (c, p) {
+        // Check if the file/folder should be ignored
+        if (options.ignoreDirectoryPattern && options.ignoreDirectoryPattern.test(file)) return;
         // Check if anything actually changed in stat
         if (files[f] && !files[f].isDirectory() && c.nlink !== 0 && files[f].mtime.getTime() == c.mtime.getTime()) return;
         files[f] = c;
