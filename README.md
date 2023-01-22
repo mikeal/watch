@@ -1,5 +1,6 @@
 # watch -- Utilities for watching file trees in node.js
 
+FORK of https://github.com/mikeal/watch as it seems to be no longer maintained despite high severity vulnerability.
 ## Install
 
 <pre>

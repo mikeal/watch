@@ -1,0 +1,25 @@
+# We want pushes to main, beta, and alpha to trigger a publish to npm for the corresponding npm dist-tag.
+# Any pull request targeting deploy branches should run all tests.
+on:
+  push:
+    branches: [main, beta, alpha]
+
+  pull_request:
+    branches: [main, beta, alpha]
+
+jobs:
+  #test:
+  #  uses: activescott/github-actions-workflows/.github/workflows/npm-tester.yml@v2
+  #  with:
+  #    package_dir: ./
+  #    node_versions: "[16]"
+
+  publish:
+    environment: npm
+    if: ${{ github.event_name != 'pull_request' }}
+    #needs: [test]
+    uses: activescott/github-actions-workflows/.github/workflows/npm-publisher.yml@npm-publisher-v4
+    with:
+      package_dir: /
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

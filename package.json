@@ -1,5 +1,5 @@
 {
-  "name": "watch",
+  "name": "@activescott/watch",
   "description": "Utilities for watching file trees.",
   "scripts": {
     "release:major": "bash scripts/release.sh major",
@@ -16,16 +16,16 @@
     "watch": "./cli.js"
   },
   "version": "1.0.2",
-  "homepage": "https://github.com/mikeal/watch",
+  "homepage": "https://github.com/activescott/watch",
   "bugs": {
-    "url": "https://github.com/mikeal/watch/issues"
+    "url": "https://github.com/activescott/watch/issues"
   },
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mikeal/watch.git"
+    "url": "git://github.com/activescott/watch.git"
   },
-  "author": "Mikeal Rogers <mikeal.rogers@gmail.com>",
+  "author": "Scott Willeke <scott2@willeke.com>",
   "directories": {
     "lib": "lib"
   },
