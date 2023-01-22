@@ -1,8 +1,6 @@
 var cp = require("child_process")
-console.log("shell.js")
 
 function getShell() {
-  console.log("getShell")
   if (process.platform === "win32") {
     return { cmd: "cmd", arg: "/C" }
   } else {
