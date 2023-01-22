@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var argv = require('minimist')(process.argv.slice(2))
-var execshell = require('exec-sh')
+var execshell = require("./shell.js").exec
 var path = require('path')
 var watch = require('./main.js')
 
